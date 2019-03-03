@@ -32,54 +32,35 @@ func DbConn() (db *sql.DB) {
 
 func Select() {
     db := DbConn()
-    selDB, err := db.Query("SELECT * FROM adjustment_details ORDER BY id DESC")
-    // fmt.Println(selDB, "RESULT INIT")
+    rows, err := db.Query("SELECT * FROM adjustment_details ORDER BY id DESC")
+    
+    type AdjustmentDetails struct {
+        Id                  int
+        AdjustmentId        int
+        EmployeeId          int
+        PayrollItemId       int
+        Amount              float32
+    }
+
+
     if err != nil {
         panic(err)
     }
 
-    // Get column names
-	columns, err := selDB.Columns()
-	if err != nil {
-		panic(err.Error()) // proper error handling instead of panic in your app
-    }
-    
-    // Make a slice for the values
-	values := make([]sql.RawBytes, len(columns))
+    defer rows.Close()
 
-	// rows.Scan wants '[]interface{}' as an argument, so we must copy the
-	// references into such a slice
-	// See http://code.google.com/p/go-wiki/wiki/InterfaceSlice for details
-	scanArgs := make([]interface{}, len(values))
-	for i := range values {
-		scanArgs[i] = &values[i]
-	}
+    for rows.Next() {
+        adjustmentDetails := AdjustmentDetails{}
+        err = rows.Scan(&adjustmentDetails.Id, &adjustmentDetails.AdjustmentId, &adjustmentDetails.EmployeeId, &adjustmentDetails.PayrollItemId, &adjustmentDetails.Amount)
 
-    var result []map[string]interface{}
-    for selDB.Next() {
-
-        // var id, adjustment_id, employee_id, payroll_item_id int
-        // var amount float32
-
-        err = selDB.Scan(scanArgs...)
         if err != nil {
-            fmt.Println(err, "RESULT SET")
+            panic(err)
         }
-
-        var value string
-        for i, col := range values {
-			// Here we can check if the value is nil (NULL value)
-			if col == nil {
-				value = "NULL"
-			} else {
-				value = string(col)
-			}
-            fmt.Println(columns[i], ": ", value)
-		}
-        fmt.Println("-----------------------------------")
+        fmt.Println(adjustmentDetails)
     }
 
-    defer db.Close()
-
-    fmt.Println(result)
+    err = rows.Err()
+    if err != nil {
+        panic(err)
+    }
 }
