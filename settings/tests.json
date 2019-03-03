@@ -1,0 +1,10 @@
+{
+  "Version": "0.1",
+  "Description": "GO lang API with JWT",
+
+  "PrivateKeyPath": "settings/keys/jwtRS256.key",
+  "PublicKeyPath": "settings/keys/jwtRS256.key.pub",
+  "JWTAccessTokenExpiration": 1,
+  "JWTRefreshTokenExpiration": 72,
+  "ServerPort": "5050"
+}
