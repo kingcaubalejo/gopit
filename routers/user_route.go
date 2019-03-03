@@ -25,5 +25,9 @@ func SetUserRoutes(router *mux.Router) *mux.Router {
 		controllers.SelectData,
 	).Methods("GET")
 
+	router.HandleFunc("/test/select-where",
+		controllers.SelectWhereData,
+	).Methods("GET")
+
 	return router
 } 

@@ -30,7 +30,7 @@ func DbConn() (db *sql.DB) {
     return db
 }
 
-func Select() {
+func SelectAll() {
     db := DbConn()
     rows, err := db.Query("SELECT * FROM adjustment_details ORDER BY id DESC")
     
@@ -63,4 +63,32 @@ func Select() {
     if err != nil {
         panic(err)
     }
+}
+
+func SelectWhere() {
+    db := DbConn()
+    rows := db.QueryRow("SELECT * FROM adjustment_details WHERE id=?", 4)
+    
+    type AdjustmentDetails struct {
+        Id                  int
+        AdjustmentId        int
+        EmployeeId          int
+        PayrollItemId       int
+        Amount              float32
+    }
+
+    adjustmentDetails := AdjustmentDetails{}
+    err := rows.Scan(&adjustmentDetails.Id, &adjustmentDetails.AdjustmentId, &adjustmentDetails.EmployeeId, &adjustmentDetails.PayrollItemId, &adjustmentDetails.Amount)
+
+    if err != nil {
+        if err == sql.ErrNoRows {
+            fmt.Println("Zero rows found")
+        } else {
+            panic(err)
+        }
+    }
+
+    defer db.Close()
+
+    fmt.Println(adjustmentDetails)
 }

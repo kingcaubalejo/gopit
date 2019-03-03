@@ -20,3 +20,8 @@ func SelectData(w http.ResponseWriter, r *http.Request) {
 	services.SelectData()
 	w.Write([]byte("GG WELL PLAYED"))
 }
+
+func SelectWhereData(w http.ResponseWriter, r *http.Request) {
+	services.SelectWhereData()
+	w.Write([]byte("GG WELL PLAYED"))
+}

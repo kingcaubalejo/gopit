@@ -1,7 +1,7 @@
 package services
 
 import (
-	"fmt"
+	_ "fmt"
 
 	"go-api-jwt/repository"
 )
@@ -28,7 +28,11 @@ func TestLang() (int, string){
 }
 
 func SelectData() (int, string) {
-	fmt.Println("Select Service")
-	repository.Select()
+	repository.SelectAll()
+	return 200, "TEST"
+}
+
+func SelectWhereData() (int, string) {
+	repository.SelectWhere()
 	return 200, "TEST"
 }
