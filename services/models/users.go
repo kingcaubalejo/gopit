@@ -1,7 +1,7 @@
 package models
 
-type User struct {
-	UUID string `json:"uuid" form:"-"`
-	Username string `json:"username" form:"username"`
-	Password string `json:"password" form:"password"`
+type Users struct {
+	UUID		int 	`json:"uuid" form:"-"`
+	Username	string 	`json:"username" form:"username"`
+	Password	string 	`json:"password" form:"password"`
 }

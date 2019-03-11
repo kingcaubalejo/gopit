@@ -1,94 +1,80 @@
 package repository
 
 import (
-	"database/sql"
-	"fmt"
+	 "database/sql"
+    "fmt"
+    
+    "go-api-jwt/services/models"
 
-	_ "github.com/go-sql-driver/mysql"
+    _ "github.com/go-sql-driver/mysql"
 )
 
-// func InitMysqlDb() {
-	
-// 	db, err := sql.Open("mysql", "root:admi@/new_erp")
-// 	if err != nil {
-// 		fmt.Println(err, "Error")
-// 	}
-
-// 	fmt.Println(db, "Database")
-// }
-
-func DbConn() (db *sql.DB) {
-    dbDriver := "mysql"
-    dbUser := "root"
-    dbPass := "admin"
-    dbName := "new_erp"
-    db, err := sql.Open(dbDriver, dbUser+":"+dbPass+"@/"+dbName)
-    if err != nil {
-        panic(err.Error())
-    }
-    fmt.Println(db, "Database")
-    return db
-}
-
-func SelectAll() {
-    db := DbConn()
-    rows, err := db.Query("SELECT * FROM adjustment_details ORDER BY id DESC")
-    
-    type AdjustmentDetails struct {
-        Id                  int
-        AdjustmentId        int
-        EmployeeId          int
-        PayrollItemId       int
-        Amount              float32
-    }
-
+func SelectAll() (map[string]interface{}) {
+    rows, err := database.Query("SELECT uuid, username, password FROM users ORDER BY uuid DESC")
 
     if err != nil {
         panic(err)
     }
 
-    defer rows.Close()
-
+    var users []map[string]interface{}
     for rows.Next() {
-        adjustmentDetails := AdjustmentDetails{}
-        err = rows.Scan(&adjustmentDetails.Id, &adjustmentDetails.AdjustmentId, &adjustmentDetails.EmployeeId, &adjustmentDetails.PayrollItemId, &adjustmentDetails.Amount)
+        user := models.Users{}
+        err = rows.Scan(&user.UUID, &user.Username, &user.Password)
 
         if err != nil {
             panic(err)
         }
-        fmt.Println(adjustmentDetails)
+
+        users = append(users, map[string]interface{}{
+            "uuid": user.UUID,
+            "username": user.Username,
+            "password": user.Password,
+        })
     }
 
     err = rows.Err()
     if err != nil {
         panic(err)
     }
+
+    return map[string]interface{}{
+        "result": users,
+    }
 }
 
-func SelectWhere() {
-    db := DbConn()
-    rows := db.QueryRow("SELECT * FROM adjustment_details WHERE id=?", 4)
-    
-    type AdjustmentDetails struct {
-        Id                  int
-        AdjustmentId        int
-        EmployeeId          int
-        PayrollItemId       int
-        Amount              float32
-    }
+func SelectWhere(uuid int) {
+    distinctUsers := models.Users{}
+    errUsers := database.QueryRow("SELECT uuid, username, password FROM users WHERE uuid=?", uuid).Scan(&distinctUsers.UUID, &distinctUsers.Username, &distinctUsers.Password)
 
-    adjustmentDetails := AdjustmentDetails{}
-    err := rows.Scan(&adjustmentDetails.Id, &adjustmentDetails.AdjustmentId, &adjustmentDetails.EmployeeId, &adjustmentDetails.PayrollItemId, &adjustmentDetails.Amount)
-
-    if err != nil {
-        if err == sql.ErrNoRows {
+    if errUsers != nil {
+        if errUsers == sql.ErrNoRows {
             fmt.Println("Zero rows found")
         } else {
-            panic(err)
+            panic(errUsers)
         }
     }
+}
 
-    defer db.Close()
+func CreateUser(user *models.Users) {
+    createUser, err := database.Prepare("INSERT INTO users (username, password) VALUES(?,?)")
+    if err != nil {
+        panic(err.Error())
+    }
+    createUser.Exec(user.Username, user.Password)
+}
 
-    fmt.Println(adjustmentDetails)
+func UpdateUser(user *models.Users) {
+    updateUser, err := database.Prepare("UPDATE users SET username=? WHERE uuid=?")
+    if err != nil {
+        panic(err.Error())
+    }
+    updateUser.Exec(user.Username, user.UUID)
+}
+
+func DeleteUser(user *models.Users) {
+    deleteUser, err := database.Prepare("DELETE FROM users WHERE uuid=?")
+    if err != nil {
+        panic(err.Error())
+    }
+    deleteUser.Exec(user.UUID)
 }

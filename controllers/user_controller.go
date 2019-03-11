@@ -2,9 +2,12 @@ package controllers
 
 import (
 	"net/http"
+	"encoding/json"
+	"strconv"
 	_"fmt"
 
 	"go-api-jwt/services"
+	"go-api-jwt/services/models"
 )
 
 func HelloController(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
@@ -17,11 +20,44 @@ func TestLangController(w http.ResponseWriter, r *http.Request){
 }
 
 func SelectData(w http.ResponseWriter, r *http.Request) {
-	services.SelectData()
-	w.Write([]byte("GG WELL PLAYED"))
+	statusCode, resultData := services.SelectData()
+	resultDataParsed, _ := json.Marshal(resultData) 
+	if statusCode == 200 {
+		w.Write([]byte(resultDataParsed))	
+	}
+	
 }
 
 func SelectWhereData(w http.ResponseWriter, r *http.Request) {
-	services.SelectWhereData()
+	UUId, _ := strconv.Atoi(r.URL.Query().Get("uuid"))
+
+	services.SelectWhereData(UUId)
+	w.Write([]byte("GG WELL PLAYED"))
+}
+
+func CreateUser(w http.ResponseWriter, r *http.Request) {
+	requestCreateUser := new(models.Users)
+	decoder := json.NewDecoder(r.Body)
+	decoder.Decode(&requestCreateUser)
+
+	services.CreateUser(requestCreateUser)
+	w.Write([]byte("GG WELL PLAYED"))
+}
+
+func UpdateUser(w http.ResponseWriter, r *http.Request) {
+	requestUpdateUser := new(models.Users)
+	decoder := json.NewDecoder(r.Body)
+	decoder.Decode(&requestUpdateUser)
+
+	services.UpdateUser(requestUpdateUser)
+	w.Write([]byte("GG WELL PLAYED"))
+}
+
+func DeleteUser(w http.ResponseWriter, r *http.Request) {
+	requestDeleteUser := new(models.Users)
+	decoder := json.NewDecoder(r.Body)
+	decoder.Decode(&requestDeleteUser)
+
+	services.DeleteUser(requestDeleteUser)
 	w.Write([]byte("GG WELL PLAYED"))
 }

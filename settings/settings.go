@@ -22,6 +22,12 @@ type Settings struct {
 	JWTAccessTokenExpiration    	int
 	JWTRefreshTokenExpiration 		int
 	ServerPort            			string
+
+	DbDriver						string
+	DbServerAddr					string
+	DbHost							string
+	DbPassword						string
+	DbName							string
 }
 
 var settings Settings = Settings{}

@@ -6,5 +6,11 @@
   "PublicKeyPath": "settings/keys/jwtRS256.key.pub",
   "JWTAccessTokenExpiration": 1,
   "JWTRefreshTokenExpiration": 72,
-  "ServerPort": "5050"
+  "ServerPort": "5050",
+  
+  "DbDriver": "mysql",
+  "DbServerAddr": "127.0.0.1",
+	"DbHost": "root",
+	"DbPassword": "admin",
+	"DbName": "go_jwt_api"
 }

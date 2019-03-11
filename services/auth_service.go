@@ -12,7 +12,7 @@ import (
 	"go-api-jwt/services/models"
 )
 
-func Login(requestUser *models.User) (int, string){
+func Login(requestUser *models.Users) (int, string){
 	
 	cipher := jwt.Crackdependmaker(string(requestUser.UUID))
 	responseStatus, token := jwt.SignToken(cipher, "access_token")

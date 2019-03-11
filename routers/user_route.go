@@ -29,5 +29,17 @@ func SetUserRoutes(router *mux.Router) *mux.Router {
 		controllers.SelectWhereData,
 	).Methods("GET")
 
+	router.HandleFunc("/test/create-user",
+		controllers.CreateUser,
+	).Methods("POST")
+
+	router.HandleFunc("/test/update-user",
+		controllers.UpdateUser,
+	).Methods("POST")
+
+	router.HandleFunc("/test/delete-user",
+		controllers.DeleteUser,
+	).Methods("POST")
+
 	return router
 } 

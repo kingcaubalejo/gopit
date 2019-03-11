@@ -4,10 +4,10 @@ import (
 	_ "fmt"
 
 	"go-api-jwt/repository"
+	"go-api-jwt/services/models"
 )
 
 func TestLang() (int, string){
-	repository.DbConn()
 	// cipher := jwt.Crackdependmaker(string(requestUser.UUID))
 	// responseStatus, token := jwt.SignToken(cipher, "access_token")
 	return 200, "ILOVE YOU"
@@ -27,12 +27,26 @@ func TestLang() (int, string){
 	// return http.StatusUnauthorized, []byte("")
 }
 
-func SelectData() (int, string) {
-	repository.SelectAll()
+func SelectData() (int, map[string]interface{}) {
+	return 200, repository.SelectAll()
+}
+
+func SelectWhereData(uuid int) (int, string) {
+	repository.SelectWhere(uuid)
 	return 200, "TEST"
 }
 
-func SelectWhereData() (int, string) {
-	repository.SelectWhere()
+func CreateUser(user *models.Users) (int, string) {
+	repository.CreateUser(user)
+	return 200, "TEST"
+}
+
+func UpdateUser(user *models.Users) (int, string) {
+	repository.UpdateUser(user)
+	return 200, "TEST"
+}
+
+func DeleteUser(user *models.Users) (int, string) {
+	repository.DeleteUser(user)
 	return 200, "TEST"
 }
