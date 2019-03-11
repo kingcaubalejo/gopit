@@ -42,7 +42,7 @@ func SelectAll() (map[string]interface{}) {
     }
 }
 
-func SelectWhere(uuid int) {
+func SelectWhere(uuid int) (map[string]interface{}) {
     distinctUsers := models.Users{}
     errUsers := database.QueryRow("SELECT uuid, username, password FROM users WHERE uuid=?", uuid).Scan(&distinctUsers.UUID, &distinctUsers.Username, &distinctUsers.Password)
 
@@ -52,6 +52,10 @@ func SelectWhere(uuid int) {
         } else {
             panic(errUsers)
         }
+    }
+
+    return map[string]interface{}{
+        "result": distinctUsers,
     }
 }
 

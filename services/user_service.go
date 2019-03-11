@@ -31,9 +31,8 @@ func SelectData() (int, map[string]interface{}) {
 	return 200, repository.SelectAll()
 }
 
-func SelectWhereData(uuid int) (int, string) {
-	repository.SelectWhere(uuid)
-	return 200, "TEST"
+func SelectWhereData(uuid int) (int, map[string]interface{}) {
+	return 200, repository.SelectWhere(uuid)
 }
 
 func CreateUser(user *models.Users) (int, string) {

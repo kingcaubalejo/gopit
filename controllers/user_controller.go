@@ -31,8 +31,11 @@ func SelectData(w http.ResponseWriter, r *http.Request) {
 func SelectWhereData(w http.ResponseWriter, r *http.Request) {
 	UUId, _ := strconv.Atoi(r.URL.Query().Get("uuid"))
 
-	services.SelectWhereData(UUId)
-	w.Write([]byte("GG WELL PLAYED"))
+	statusCode, resultData := services.SelectWhereData(UUId)
+	resultDataParsed, _ := json.Marshal(resultData) 
+	if statusCode == 200 {
+		w.Write([]byte(resultDataParsed))	
+	}
 }
 
 func CreateUser(w http.ResponseWriter, r *http.Request) {
