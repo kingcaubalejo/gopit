@@ -43,8 +43,10 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	decoder := json.NewDecoder(r.Body)
 	decoder.Decode(&requestCreateUser)
 
-	services.CreateUser(requestCreateUser)
-	w.Write([]byte("GG WELL PLAYED"))
+	statusCode, respondResult := services.CreateUser(requestCreateUser)
+	if statusCode == 200 {
+		w.Write(respondResult)
+	}
 }
 
 func UpdateUser(w http.ResponseWriter, r *http.Request) {

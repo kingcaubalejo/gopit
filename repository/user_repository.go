@@ -59,12 +59,14 @@ func SelectWhere(uuid int) (map[string]interface{}) {
     }
 }
 
-func CreateUser(user *models.Users) {
+func CreateUser(user *models.Users) ([]byte) {
     createUser, err := database.Prepare("INSERT INTO users (username, password) VALUES(?,?)")
     if err != nil {
         panic(err.Error())
     }
     createUser.Exec(user.Username, user.Password)
+    
+    return []byte("User is successfully created")
 }
 
 func UpdateUser(user *models.Users) {
