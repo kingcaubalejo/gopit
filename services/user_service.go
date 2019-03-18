@@ -2,6 +2,7 @@ package services
 
 import (
 	"fmt"
+	"time"
 
 	"go-api-jwt-v2/repository"
 	"go-api-jwt-v2/services/models"
@@ -49,16 +50,37 @@ func DeleteUser(user *models.Users) (int, string) {
 	return 200, "TEST"
 }
 
-type UserRepoServer struct {
-	UserRepo repository.DbUserRepo
-}
+var ur repository.DbUserRepo
 
-func DisplayUserListService(uuid int) (int, models.Users) {
-	ur := UserRepoServer{}
-	list, err := ur.UserRepo.DisplayList(uuid)
+func DisplayUserList(uuid int) (int, models.Users) {
+	list, err := ur.DisplayList(uuid)
 	fmt.Println(err, "ERR")
 	if err != nil {
 		return 500, models.Users{}
 	}
 	return 200, list
+}
+
+type error interface {
+	Error() string
+}
+
+type Errors struct {
+	When time.Time
+	What string
+}
+
+func (e *Errors) Error() string {
+	return fmt.Sprintf("at %v, %s", e.When, e.What)
+}
+
+func SaveUser(u models.Users) (int, error){
+	err := ur.Save(u)
+	if err != nil {
+		return 500, &Errors{
+			When: time.Now(),
+			What: "it didn't work",
+		}
+	}
+	return 200, nil
 }

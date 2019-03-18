@@ -30,23 +30,25 @@ func SelectData(w http.ResponseWriter, r *http.Request) {
 
 func SelectWhereData(w http.ResponseWriter, r *http.Request) {
 	UUId, _ := strconv.Atoi(r.URL.Query().Get("uuid"))
-
-	// statusCode, resultData := services.SelectWhereData(UUId)
-	statusCode, resultData := services.DisplayUserListService(UUId)
+	statusCode, resultData := services.DisplayUserList(UUId)
 	resultDataParsed, _ := json.Marshal(resultData) 
 	if statusCode == 200 {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(statusCode)
 		w.Write([]byte(resultDataParsed))	
 	}
 }
 
 func CreateUser(w http.ResponseWriter, r *http.Request) {
-	requestCreateUser := new(models.Users)
+	requestCreateUser := models.Users{}
 	decoder := json.NewDecoder(r.Body)
 	decoder.Decode(&requestCreateUser)
 
-	statusCode, respondResult := services.CreateUser(requestCreateUser)
-	if statusCode == 200 {
-		w.Write(respondResult)
+	statusCode, respondResult := services.SaveUser(requestCreateUser)
+	if statusCode == 200 && respondResult == nil {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(statusCode)
+		w.Write([]byte("User is created successfully."))
 	}
 }
 

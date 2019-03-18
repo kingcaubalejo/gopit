@@ -11,9 +11,7 @@ import (
     _ "github.com/go-sql-driver/mysql"
 )
 
-type DbUserRepo struct {
-    Repository interfaces.UserSaver
-}
+
 
 func SelectAll() (map[string]interface{}) {
     rows, err := database.Query("SELECT uuid, username, password FROM users ORDER BY uuid DESC")
@@ -92,6 +90,10 @@ func DeleteUser(user *models.Users) {
 }
 
 //Implementation of interfaces
+type DbUserRepo struct {
+    Repository interfaces.User
+}
+
 func (dbUserRepo *DbUserRepo) DisplayList(uuid int) (models.Users, error) {
     distinctUsers := models.Users{}
     errUsers := database.QueryRow("SELECT uuid, username, password FROM users WHERE uuid=?", uuid).Scan(&distinctUsers.UUID, &distinctUsers.Username, &distinctUsers.Password)
@@ -104,4 +106,15 @@ func (dbUserRepo *DbUserRepo) DisplayList(uuid int) (models.Users, error) {
     }
 
     return distinctUsers, nil
+}
+
+func (dbUserRepo *DbUserRepo) Save(u models.Users) error {
+    createUser, err := database.Prepare("INSERT INTO users (username, password) VALUES(?,?)")
+    if err != nil {
+        return err
+    }
+
+    createUser.Exec(u.Username, u.Password)
+    
+    return nil
 }
