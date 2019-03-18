@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 
-	"go-api-jwt/settings"
+	"go-api-jwt-v2/settings"
 
     _ "github.com/go-sql-driver/mysql"
 )

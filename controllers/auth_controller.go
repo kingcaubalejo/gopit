@@ -1,8 +1,8 @@
 package controllers
 
 import (
-	"go-api-jwt/services"
-	"go-api-jwt/services/models"
+	"go-api-jwt-v2/services"
+	"go-api-jwt-v2/services/models"
 	"encoding/json"
 	"net/http"
 )

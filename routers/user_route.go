@@ -1,11 +1,11 @@
 package routers
 
 import (
-	"go-api-jwt/controllers"
+	"go-api-jwt-v2/controllers"
 	_"go-scaffolding/core/authentication"
 	"github.com/codegangsta/negroni"
 	"github.com/gorilla/mux"
-	"go-api-jwt/lib/jwt"
+	"go-api-jwt-v2/lib/jwt"
 )
 
 func SetUserRoutes(router *mux.Router) *mux.Router {

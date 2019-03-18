@@ -7,9 +7,9 @@ import (
 	_ "strconv"
 
 	_"go-scaffolding/api/parameters"
-	"go-api-jwt/lib/jwt"
+	"go-api-jwt-v2/lib/jwt"
 	_"go-scaffolding/core/authentication"
-	"go-api-jwt/services/models"
+	"go-api-jwt-v2/services/models"
 )
 
 func Login(requestUser *models.Users) (int, string){

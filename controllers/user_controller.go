@@ -6,8 +6,8 @@ import (
 	"strconv"
 	_"fmt"
 
-	"go-api-jwt/services"
-	"go-api-jwt/services/models"
+	"go-api-jwt-v2/services"
+	"go-api-jwt-v2/services/models"
 )
 
 func HelloController(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
@@ -31,7 +31,8 @@ func SelectData(w http.ResponseWriter, r *http.Request) {
 func SelectWhereData(w http.ResponseWriter, r *http.Request) {
 	UUId, _ := strconv.Atoi(r.URL.Query().Get("uuid"))
 
-	statusCode, resultData := services.SelectWhereData(UUId)
+	// statusCode, resultData := services.SelectWhereData(UUId)
+	statusCode, resultData := services.DisplayUserListService(UUId)
 	resultDataParsed, _ := json.Marshal(resultData) 
 	if statusCode == 200 {
 		w.Write([]byte(resultDataParsed))	

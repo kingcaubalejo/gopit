@@ -4,9 +4,9 @@ import (
 	"net/http"
 	"fmt"
 
-	"go-api-jwt/routers"
-	"go-api-jwt/settings"
-	"go-api-jwt/repository"
+	"go-api-jwt-v2/routers"
+	"go-api-jwt-v2/settings"
+	"go-api-jwt-v2/repository"
 
 	"github.com/codegangsta/negroni"
 )

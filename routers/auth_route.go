@@ -1,7 +1,7 @@
 package routers
 
 import(
-	"go-api-jwt/controllers"
+	"go-api-jwt-v2/controllers"
 	_"github.com/codegangsta/negroni"
 	"github.com/gorilla/mux"
 )

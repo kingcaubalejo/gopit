@@ -14,7 +14,7 @@ import (
     "bufio"
 
     jwtAuthenticate "github.com/dgrijalva/jwt-go"
-    "go-api-jwt/settings"
+    "go-api-jwt-v2/settings"
 )
 
 // const (

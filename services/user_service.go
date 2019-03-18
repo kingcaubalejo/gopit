@@ -1,10 +1,10 @@
 package services
 
 import (
-	_ "fmt"
+	"fmt"
 
-	"go-api-jwt/repository"
-	"go-api-jwt/services/models"
+	"go-api-jwt-v2/repository"
+	"go-api-jwt-v2/services/models"
 )
 
 func TestLang() (int, string){
@@ -47,4 +47,18 @@ func UpdateUser(user *models.Users) (int, string) {
 func DeleteUser(user *models.Users) (int, string) {
 	repository.DeleteUser(user)
 	return 200, "TEST"
+}
+
+type UserRepoServer struct {
+	UserRepo repository.DbUserRepo
+}
+
+func DisplayUserListService(uuid int) (int, models.Users) {
+	ur := UserRepoServer{}
+	list, err := ur.UserRepo.DisplayList(uuid)
+	fmt.Println(err, "ERR")
+	if err != nil {
+		return 500, models.Users{}
+	}
+	return 200, list
 }

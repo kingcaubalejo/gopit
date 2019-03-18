@@ -3,11 +3,17 @@ package repository
 import (
 	 "database/sql"
     "fmt"
+    "errors"
     
-    "go-api-jwt/services/models"
+    "go-api-jwt-v2/services/models"
+    "go-api-jwt-v2/interfaces"
 
     _ "github.com/go-sql-driver/mysql"
 )
+
+type DbUserRepo struct {
+    Repository interfaces.UserSaver
+}
 
 func SelectAll() (map[string]interface{}) {
     rows, err := database.Query("SELECT uuid, username, password FROM users ORDER BY uuid DESC")
@@ -83,4 +89,19 @@ func DeleteUser(user *models.Users) {
         panic(err.Error())
     }
     deleteUser.Exec(user.UUID)
+}
+
+//Implementation of interfaces
+func (dbUserRepo *DbUserRepo) DisplayList(uuid int) (models.Users, error) {
+    distinctUsers := models.Users{}
+    errUsers := database.QueryRow("SELECT uuid, username, password FROM users WHERE uuid=?", uuid).Scan(&distinctUsers.UUID, &distinctUsers.Username, &distinctUsers.Password)
+
+    if errUsers != nil {
+        if errUsers != sql.ErrNoRows {
+            return distinctUsers, errUsers
+        }
+        return distinctUsers, errors.New("Zero rows found.")
+    }
+
+    return distinctUsers, nil
 }
