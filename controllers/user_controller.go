@@ -19,19 +19,24 @@ func TestLangController(w http.ResponseWriter, r *http.Request){
 	w.Write([]byte("DB binding..."))
 }
 
-func SelectData(w http.ResponseWriter, r *http.Request) {
-	statusCode, resultData := services.SelectData()
-	resultDataParsed, _ := json.Marshal(resultData) 
+func UserDisplayList(w http.ResponseWriter, r *http.Request) {
+	statusCode, resultData := services.DisplayListUser()
+	resultDataParsed, _ := json.Marshal(resultData)
+
 	if statusCode == 200 {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(statusCode)
 		w.Write([]byte(resultDataParsed))	
 	}
 	
 }
 
-func SelectWhereData(w http.ResponseWriter, r *http.Request) {
+func UserDisplayListById(w http.ResponseWriter, r *http.Request) {
 	UUId, _ := strconv.Atoi(r.URL.Query().Get("uuid"))
-	statusCode, resultData := services.DisplayUserList(UUId)
-	resultDataParsed, _ := json.Marshal(resultData) 
+
+	statusCode, resultData := services.DisplayListUserById(UUId)
+	resultDataParsed, _ := json.Marshal(resultData)
+
 	if statusCode == 200 {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(statusCode)
@@ -53,19 +58,25 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func UpdateUser(w http.ResponseWriter, r *http.Request) {
-	requestUpdateUser := new(models.Users)
+	requestUpdateUser := models.Users{}
 	decoder := json.NewDecoder(r.Body)
 	decoder.Decode(&requestUpdateUser)
 
-	services.UpdateUser(requestUpdateUser)
-	w.Write([]byte("GG WELL PLAYED"))
+	statusCode, respondResult := services.UpdateUser(requestUpdateUser)
+	if statusCode == 200 && respondResult == nil {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(statusCode)
+		w.Write([]byte("User is updated successfully."))
+	}
 }
 
 func DeleteUser(w http.ResponseWriter, r *http.Request) {
-	requestDeleteUser := new(models.Users)
-	decoder := json.NewDecoder(r.Body)
-	decoder.Decode(&requestDeleteUser)
+	UUId, _ := strconv.Atoi(r.URL.Query().Get("uuid"))
 
-	services.DeleteUser(requestDeleteUser)
-	w.Write([]byte("GG WELL PLAYED"))
+	statusCode, respondResult := services.DeleteUser(UUId)
+	if statusCode == 200 && respondResult == nil {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(statusCode)
+		w.Write([]byte("User is deleted successfully."))
+	}
 }

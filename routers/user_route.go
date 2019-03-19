@@ -21,25 +21,25 @@ func SetUserRoutes(router *mux.Router) *mux.Router {
 			controllers.TestLangController,
 		).Methods("GET")
 
-	router.HandleFunc("/test/select",
-		controllers.SelectData,
+	router.HandleFunc("/user/list",
+		controllers.UserDisplayList,
 	).Methods("GET")
 
-	router.HandleFunc("/test/select-where",
-		controllers.SelectWhereData,
+	router.HandleFunc("/user/data",
+		controllers.UserDisplayListById,
 	).Methods("GET")
 
-	router.HandleFunc("/test/create-user",
+	router.HandleFunc("/user/create",
 		controllers.CreateUser,
 	).Methods("POST")
 
-	router.HandleFunc("/test/update-user",
+	router.HandleFunc("/user/update",
 		controllers.UpdateUser,
 	).Methods("POST")
 
-	router.HandleFunc("/test/delete-user",
+	router.HandleFunc("/user/delete",
 		controllers.DeleteUser,
-	).Methods("POST")
+	).Methods("DELETE")
 
 	return router
 } 
