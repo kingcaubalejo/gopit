@@ -13,12 +13,7 @@ func HelloController(w http.ResponseWriter, r *http.Request, next http.HandlerFu
 	w.Write([]byte("Hello, World"))
 }
 
-func TestLangController(w http.ResponseWriter, r *http.Request){
-	services.TestLang()
-	w.Write([]byte("DB binding..."))
-}
-
-func UserDisplayList(w http.ResponseWriter, r *http.Request) {
+func UserDisplayList(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
 	resultData, statusCode, err := services.DisplayListUser()
 	if err != nil {
 		http.Error(w, err.Error(), statusCode)
@@ -30,7 +25,7 @@ func UserDisplayList(w http.ResponseWriter, r *http.Request) {
 	w.Write(resultData)
 }
 
-func UserDisplayListById(w http.ResponseWriter, r *http.Request) {
+func UserDisplayListById(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
 	UUId, _ := strconv.Atoi(r.URL.Query().Get("uuid"))
 	resultData, statusCode, err := services.DisplayListUserById(UUId)
 	if err != nil {
@@ -43,7 +38,7 @@ func UserDisplayListById(w http.ResponseWriter, r *http.Request) {
 	w.Write(resultData)	
 }
 
-func CreateUser(w http.ResponseWriter, r *http.Request) {
+func CreateUser(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
 	requestCreateUser := models.Users{}
 	decoder := json.NewDecoder(r.Body)
 	decoder.Decode(&requestCreateUser)
@@ -59,7 +54,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	w.Write(resultData)
 }
 
-func UpdateUser(w http.ResponseWriter, r *http.Request) {
+func UpdateUser(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
 	requestUpdateUser := models.Users{}
 	decoder := json.NewDecoder(r.Body)
 	decoder.Decode(&requestUpdateUser)
@@ -75,7 +70,7 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 	w.Write(resultData)
 }
 
-func DeleteUser(w http.ResponseWriter, r *http.Request) {
+func DeleteUser(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
 	UUId, _ := strconv.Atoi(r.URL.Query().Get("uuid"))
 
 	resultData, statusCode, err := services.DeleteUser(UUId)

@@ -1,7 +1,7 @@
 package services
 
 import (
-	_"encoding/json"
+	"encoding/json"
 	_"net/http"
 	_"fmt"
 	_ "strconv"
@@ -10,7 +10,10 @@ import (
 	"go-api-jwt-v2/lib/jwt"
 	_"go-scaffolding/core/authentication"
 	"go-api-jwt-v2/services/models"
+	"go-api-jwt-v2/repository"
 )
+
+var auth repository.DbAuthRepo
 
 func Login(requestUser *models.Users) (int, string){
 	
@@ -31,4 +34,14 @@ func Login(requestUser *models.Users) (int, string){
 		// }
 	// }
 	// return http.StatusUnauthorized, []byte("")
+}
+
+func AuthUser(u *models.Users) ([]byte, int, error) {
+	authResult, err := auth.AuthenticateUser(u)
+	if err != nil {
+		return []byte(""), 500, err
+	}
+
+	result, _ := json.Marshal(authResult)
+	return result, 200, nil
 }

@@ -9,37 +9,35 @@ import (
 )
 
 func SetUserRoutes(router *mux.Router) *mux.Router {
-	router.Handle(
-		"/test/hello",
+	router.Handle("/user/list",
 		negroni.New(
 			negroni.HandlerFunc(jwt.JwtMiddleware.HandlerWithNext),
-			negroni.Wrap(jwt.MyHandler),
-			negroni.HandlerFunc(controllers.HelloController),
+			negroni.HandlerFunc(controllers.UserDisplayList),
 		)).Methods("GET")
 
-	router.HandleFunc("/test/db",
-			controllers.TestLangController,
-		).Methods("GET")
+	router.Handle("/user/data",
+		negroni.New(
+			negroni.HandlerFunc(jwt.JwtMiddleware.HandlerWithNext),
+			negroni.HandlerFunc(controllers.UserDisplayListById),
+		)).Methods("GET")
 
-	router.HandleFunc("/user/list",
-		controllers.UserDisplayList,
-	).Methods("GET")
+	router.Handle("/user/create",
+		negroni.New(
+			negroni.HandlerFunc(jwt.JwtMiddleware.HandlerWithNext),
+			negroni.HandlerFunc(controllers.CreateUser),
+		)).Methods("POST")
 
-	router.HandleFunc("/user/data",
-		controllers.UserDisplayListById,
-	).Methods("GET")
+	router.Handle("/user/update",
+		negroni.New(
+			negroni.HandlerFunc(jwt.JwtMiddleware.HandlerWithNext),
+			negroni.HandlerFunc(controllers.UpdateUser),
+		)).Methods("PUT")
 
-	router.HandleFunc("/user/create",
-		controllers.CreateUser,
-	).Methods("POST")
-
-	router.HandleFunc("/user/update",
-		controllers.UpdateUser,
-	).Methods("PUT")
-
-	router.HandleFunc("/user/delete",
-		controllers.DeleteUser,
-	).Methods("DELETE")
+	router.Handle("/user/delete",
+		negroni.New(
+			negroni.HandlerFunc(jwt.JwtMiddleware.HandlerWithNext),
+			negroni.HandlerFunc(controllers.DeleteUser),
+		)).Methods("DELETE")
 
 	return router
 } 
