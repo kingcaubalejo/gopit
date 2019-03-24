@@ -1,14 +1,12 @@
 package repository
 
 import (
-	 "database/sql"
-    _ "fmt"
+	"database/sql"
     "errors"
     
     "go-api-jwt-v2/services/models"
     "go-api-jwt-v2/interfaces"
-
-    _ "github.com/go-sql-driver/mysql"
+    "go-api-jwt-v2/lib"
 )
 
 type DbUserRepo struct {
@@ -57,7 +55,7 @@ func (dbUserRepo *DbUserRepo) Save(u models.Users) error {
         return err
     }
 
-    createUser.Exec(u.Username, u.Password)
+    createUser.Exec(u.Username, lib.EncryptPlainText(u.Password))
     
     return nil
 }

@@ -1,14 +1,10 @@
 package jwt
 
 import (
-    "crypto/md5"
     "crypto/rsa"
 	"crypto/x509"
-    "encoding/hex"
     "net/http"
-    "strings"
     "time"
-    "math/rand"
     "encoding/pem"
     "os"
     "bufio"
@@ -16,11 +12,6 @@ import (
     jwtAuthenticate "github.com/dgrijalva/jwt-go"
     "go-api-jwt-v2/settings"
 )
-
-// const (
-// 	tokenDuration = 72
-// 	expireOffset  = 3600
-// )
 
 type JWTAuthenticationBackend struct {
 	privateKey *rsa.PrivateKey
@@ -117,30 +108,6 @@ func getPublicKey() *rsa.PublicKey {
 	return rsaPub
 }
 
-func Crackdependmaker(str string) string{
-	strUno := RandomString(5)
-	strDos := RandomString(30)
-	finalstr :=  ")*&^%$#@!13423423CodeThenDEcoDe" +  str + "ToCodeOrNotToCodeHardCoder!@#$%^&*()_03746253" + strUno + strDos
-	m := md5.New()
-	m.Write([]byte(finalstr))
-	return hex.EncodeToString(m.Sum(nil)) + "_" + strUno + "_" + strDos
-}
-
-func Crackdepend(str string,crypt string) bool{
-   splitArray := strings.Split(crypt,"_")
-   if len(splitArray) != 3 {
-	   return false
-   }
-   finalstr :=  ")*&^%$#@!13423423CodeThenDEcoDe" +  str + "ToCodeOrNotToCodeHardCoder!@#$%^&*()_03746253" + splitArray[1] + splitArray[2]
-   m := md5.New()
-   m.Write([]byte(finalstr))
-   encrypt  := hex.EncodeToString(m.Sum(nil)) + "_" + splitArray[1] + "_" + splitArray[2]
-   if encrypt == crypt {
-	   return true;
-   }
-   return false;
-}
-
 func GenerateClaims(crypt string, tokenType string) jwtAuthenticate.MapClaims {
    var duration = 0
    if duration = settings.Get().JWTRefreshTokenExpiration; tokenType == "acess_token" {
@@ -151,14 +118,4 @@ func GenerateClaims(crypt string, tokenType string) jwtAuthenticate.MapClaims {
    claims["exp"] = time.Now().Add(time.Hour * time.Duration(duration)).Unix()
    claims["sub"] = crypt
    return claims
-}
-
-func RandomString(strlen int) string {
-   rand.Seed(time.Now().UTC().UnixNano())
-   const chars = "abcdefghijklmnopqrstuvwxyz0123456789"
-   result := make([]byte, strlen)
-   for i := 0; i < strlen; i++ {
-	   result[i] = chars[rand.Intn(len(chars))]
-   }
-   return string(result)
 }

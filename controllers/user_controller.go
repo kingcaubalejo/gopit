@@ -9,10 +9,6 @@ import (
 	"go-api-jwt-v2/services/models"
 )
 
-func HelloController(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
-	w.Write([]byte("Hello, World"))
-}
-
 func UserDisplayList(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
 	resultData, statusCode, err := services.DisplayListUser()
 	if err != nil {

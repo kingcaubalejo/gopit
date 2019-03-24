@@ -8,6 +8,7 @@ import (
    "go-api-jwt-v2/services/models"
    "go-api-jwt-v2/interfaces"
    "go-api-jwt-v2/lib/jwt"
+   "go-api-jwt-v2/lib"
 )
 
 
@@ -16,10 +17,18 @@ type DbAuthRepo struct {
 }
 
 func (auth *DbAuthRepo) AuthenticateUser(u *models.Users) (map[string]interface{}, error) {
+    if u.Username != "" {
+        return nil, errors.New("Please insert username.")
+    }
+
+    if u.Password != "" {
+        return nil, errors.New("Please insert password.")
+    }
+
 	authUser := models.Users{}
     errUsers := database.QueryRow("SELECT uuid, username FROM users WHERE username=? AND password=?", u.Username, u.Password).Scan(&authUser.UUID, &authUser.Username)
 
-	cipher := jwt.Crackdependmaker(string(authUser.UUID))
+	cipher := lib.EncryptPlainText(string(authUser.UUID))
     responseStatus, token := jwt.SignToken(cipher, "access_token")
     
     if responseStatus != 200 {
