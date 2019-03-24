@@ -55,7 +55,7 @@ func (dbUserRepo *DbUserRepo) Save(u models.Users) error {
         return err
     }
 
-    createUser.Exec(u.Username, lib.EncryptPlainText(u.Password))
+    createUser.Exec(u.Username, lib.EncryptPlainText(u.Username + u.Password))
     
     return nil
 }

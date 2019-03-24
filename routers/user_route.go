@@ -23,7 +23,7 @@ func SetUserRoutes(router *mux.Router) *mux.Router {
 
 	router.Handle("/user/create",
 		negroni.New(
-			negroni.HandlerFunc(jwt.JwtMiddleware.HandlerWithNext),
+			// negroni.HandlerFunc(jwt.JwtMiddleware.HandlerWithNext),
 			negroni.HandlerFunc(controllers.CreateUser),
 		)).Methods("POST")
 
