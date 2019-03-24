@@ -34,12 +34,7 @@ func (dbUserRepo *DbUserRepo) DisplayList() ([]models.Users, error) {
         users = append(users, user)
     }
 
-    err = rows.Err()
-    if err != nil {
-        return []models.Users{}, err
-    }
-
-    return users, err
+    return users, nil
 }
 
 func (dbUserRepo *DbUserRepo) DisplayListById(uuid int) (models.Users, error) {

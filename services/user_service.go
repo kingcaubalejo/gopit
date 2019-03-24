@@ -1,9 +1,11 @@
 package services
 
 import (
-	"fmt"
-	"time"
-
+	_"fmt"
+	_"time"
+	"encoding/json"
+	_"errors"
+	
 	"go-api-jwt-v2/repository"
 	"go-api-jwt-v2/services/models"
 )
@@ -30,69 +32,76 @@ func TestLang() (int, string){
 
 var ur repository.DbUserRepo
 
-type error interface {
-	Error() string
-}
-
-type Errors struct {
-	When time.Time
-	What string
-}
-
-func (e *Errors) Error() string {
-	return fmt.Sprintf("at %v, %s", e.When, e.What)
-}
-
-func DisplayListUser() (int, []models.Users) {
+func DisplayListUser() ([]byte, int, error) {
 	list, err := ur.DisplayList()
 	if err != nil {
-		return 500, []models.Users{}
+		return nil, 500, err
 	}
 
-	return 200, list
+	resultParsed, errList := json.Marshal(list)
+	if errList != nil {
+		return nil, 500, errList
+	}
+	return resultParsed, 200, nil
 }
 
-func DisplayListUserById(uuid int) (int, models.Users) {
+func DisplayListUserById(uuid int) ([]byte, int, error) {
 	list, err := ur.DisplayListById(uuid)
 	if err != nil {
-		return 500, models.Users{}
+		return []byte(""), 500, err
 	}
 
-	return 200, list
+	resultParsed, errList := json.Marshal(list)
+	if errList != nil {
+		return nil, 500, errList
+	}
+	return resultParsed, 200, nil
 }
 
-func SaveUser(u models.Users) (int, error) {
+func SaveUser(u models.Users) ([]byte, int, error) {
 	err := ur.Save(u)
 	if err != nil {
-		return 500, &Errors{
-			When: time.Now(),
-			What: "it didn't work",
-		}
+		return []byte(""), 500, err
 	}
 
-	return 200, nil
+	resultParsed, errList := json.Marshal(map[string]interface{}{
+		"data": "User is successfully created.",
+	})
+	if errList != nil {
+		return nil, 500, errList
+	}
+
+	return resultParsed, 200, nil
 }
 
-func UpdateUser(u models.Users) (int, error) {
+func UpdateUser(u models.Users) ([]byte, int, error) {
 	err := ur.Update(u)
 	if err != nil {
-		return 500, &Errors{
-			When: time.Now(),
-			What: "it didn't work",
-		}
+		return []byte(""), 500, err
 	}
 
-	return 200, nil
+	resultParsed, errList := json.Marshal(map[string]interface{}{
+		"data": "User is successfully updated.",
+	})
+	if errList != nil {
+		return nil, 500, errList
+	}
+	
+	return resultParsed, 200, nil
 }
 
-func DeleteUser(uuid int) (int, error) {
+func DeleteUser(uuid int) ([]byte, int, error) {
 	err := ur.Delete(uuid)
 	if err != nil {
-		return 500, &Errors{
-			When: time.Now(),
-			What: "it didn't work",
-		}
+		return []byte(""), 500, err
 	}
 
-	return 200, nil
+	resultParsed, errList := json.Marshal(map[string]interface{}{
+		"data": "User is successfully deleted.",
+	})
+	if errList != nil {
+		return nil, 500, errList
+	}
+	
+	return resultParsed, 200, nil
 }

@@ -35,7 +35,7 @@ func SetUserRoutes(router *mux.Router) *mux.Router {
 
 	router.HandleFunc("/user/update",
 		controllers.UpdateUser,
-	).Methods("POST")
+	).Methods("PUT")
 
 	router.HandleFunc("/user/delete",
 		controllers.DeleteUser,
