@@ -10,26 +10,6 @@ import (
 	"go-api-jwt-v2/services/models"
 )
 
-func TestLang() (int, string){
-	// cipher := jwt.Crackdependmaker(string(requestUser.UUID))
-	// responseStatus, token := jwt.SignToken(cipher, "access_token")
-	return 200, "ILOVE YOU"
-	// authBackend := authentication.InitJWTAuthenticationBackend()
-
-	// if authBackend.Authenticate(requestUser) {
-		// token, err := authBackend.GenerateToken(requestUser.UUID)
-		// token, err := authBackend.GenerateToken(requestUser.UUID)
-		// fmt.Println(token, "HEY TOKEN")
-		// if err != nil {
-		// 	return http.StatusInternalServerError, []byte("")
-		// } else {
-		// 	response, _ := json.Marshal(parameters.TokenAuthentication{token})
-		// 	return http.StatusOK, response
-		// }
-	// }
-	// return http.StatusUnauthorized, []byte("")
-}
-
 var ur repository.DbUserRepo
 
 func DisplayListUser() ([]byte, int, error) {
