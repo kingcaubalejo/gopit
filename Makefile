@@ -22,4 +22,4 @@ run:
 deps:
         $(GOGET) -u github.com/dgrijalva/jwt-go
         $(GOGET) -u github.com/auth0/go-jwt-middleware
-        $(GOGET) -u github.com/go-sql-driver/mysql
+       	$(GOGET) -u github.com/go-sql-driver/mysql
