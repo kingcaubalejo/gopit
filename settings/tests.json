@@ -1,5 +1,5 @@
 {
-  "Version": "0.2",
+  "Version": "2.0",
   "Description": "GO lang API with JWT",
 
   "PrivateKeyPath": "settings/keys/jwtRS256.key",
