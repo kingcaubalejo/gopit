@@ -3,11 +3,16 @@ GOBUILD=$(GOCMD) build
 GOCLEAN=$(GOCMD) clean
 GOTEST=$(GOCMD) test
 GOGET=$(GOCMD) get
+
 BINARY_NAME=go-api-jwt-v2
 BINARY_UNIX=$(BINARY_NAME)_unix
 
+PROJECTNAME := $(shell basename "$(pwd)")
+
 GO_ENV:=tests
 export GO_ENV
+
+PID := /tmp/.$(PROJECTNAME).PID
 
 all:
 	test build
@@ -20,7 +25,8 @@ clean:
 	rm -f ./bin/$(BINARY_NAME)
 	rm -f ./bin/$(BINARY_UNIX)
 run:
-	$(GOBUILD) -o $(BINARY_NAME) -v
+	$(GOBUILD) -o $(BINARY_NAME) 2>&1 & echo $$! > $(PID)
+	@cat $(PID) | sed "/^/s/^/  \>  PID: /"
 	@echo "-------------------------------------"
 	@echo "GO_ENV=""$$GO_ENV"
 	./$(BINARY_NAME)
