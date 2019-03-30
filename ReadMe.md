@@ -16,6 +16,6 @@ GOaPIjwT, A jwt api which leverages the use and functionalities of go lang.
 Thank you guys :D
 
 # Usage
-''' make
-    make run
-'''
+``` bash
+make run
+```
