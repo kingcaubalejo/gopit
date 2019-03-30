@@ -17,5 +17,5 @@ Thank you guys :D
 
 # Usage
 ``` bash
-make run
+"make run" to your project folder
 ```
