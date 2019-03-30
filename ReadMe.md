@@ -3,7 +3,7 @@ GOaPIjwT, A jwt api which leverages the use and functionalities of go lang.
 
 # What covers GOPIT?
 1. It's based on the clean code architecture of uncle bob. See https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html
-2. 
+2. Usage of Jwt Tokens.
 
 
 # Libraries that make this project happened.
@@ -13,4 +13,9 @@ GOaPIjwT, A jwt api which leverages the use and functionalities of go lang.
 4. github.com/gorilla/handlers
 5. github.com/urfave/negroni
 
-Thanks you guys :D
+Thank you guys :D
+
+# Usage
+''' make
+    make run
+'''
