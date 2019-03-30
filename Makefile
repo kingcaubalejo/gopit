@@ -25,12 +25,8 @@ clean:
 	rm -f ./bin/$(BINARY_NAME)
 	rm -f ./bin/$(BINARY_UNIX)
 run:
-	$(GOBUILD) -o $(BINARY_NAME) 2>&1 & echo $$! > $(PID)
-	@cat $(PID) | sed "/^/s/^/  \>  PID: /"
-	@echo "-------------------------------------"
-	@echo "GO_ENV=""$$GO_ENV"
+	$(GOBUILD) -o $(BINARY_NAME)
 	./$(BINARY_NAME)
-
 deps:
 	$(GOGET) -u github.com/dgrijalva/jwt-go
 	$(GOGET) -u github.com/auth0/go-jwt-middleware
