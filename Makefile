@@ -33,3 +33,5 @@ deps:
 	$(GOGET) -u github.com/go-sql-driver/mysql
 	$(GOGET) -u github.com/gorilla/handlers
 	$(GOGET) -u github.com/urfave/negroni
+	$(GOGET) -u github.com/onsi/ginkgo/ginkgo
+	$(GOGET) -u github.com/onsi/gomega
