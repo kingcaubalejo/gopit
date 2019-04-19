@@ -3,6 +3,7 @@ package repository
 import (
 	"database/sql"
     "errors"
+    _"fmt"
     
     "go-api-jwt-v2/services/models"
     "go-api-jwt-v2/interfaces"
@@ -78,6 +79,19 @@ func (dbUserRepo *DbUserRepo) Delete(uuid int) error {
     }
 
     deleteUser.Exec(uuid)
+
+    return nil
+}
+
+func (dbUserRepo *DbUserRepo) DeleteMultiple(uuids []int) error {
+    deleteMultipleUser, err := database.Prepare("DELETE FROM users WHERE users.uuid=?")
+    if err != nil {
+        return err
+    }
+
+    for _, uuid := range uuids {
+        deleteMultipleUser.Exec(uuid)
+    }
 
     return nil
 }

@@ -10,4 +10,5 @@ type User interface {
 	Save(u models.Users) (error)
 	Delete(uuid int) (error)
 	Update(u models.Users) (error)
+	DeleteMultiple(u []models.Users) (error)
 }

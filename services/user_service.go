@@ -1,7 +1,7 @@
 package services
 
 import (
-	_"fmt"
+	"fmt"
 	_"time"
 	"encoding/json"
 	_"errors"
@@ -78,6 +78,23 @@ func DeleteUser(uuid int) ([]byte, int, error) {
 
 	resultParsed, errList := json.Marshal(map[string]interface{}{
 		"data": "User is successfully deleted.",
+	})
+	if errList != nil {
+		return nil, 500, errList
+	}
+	
+	return resultParsed, 200, nil
+}
+
+func DeleteMultipleUser(uuid []int) ([]byte, int, error) {
+	fmt.Println(uuid, "services multiple delete")
+	err := ur.DeleteMultiple(uuid)
+	if err != nil {
+		return []byte(""), 500, err
+	}
+
+	resultParsed, errList := json.Marshal(map[string]interface{}{
+		"data": "User(s) is successfully deleted.",
 	})
 	if errList != nil {
 		return nil, 500, errList

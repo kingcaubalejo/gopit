@@ -38,6 +38,11 @@ func SetUserRoutes(router *mux.Router) *mux.Router {
 			negroni.HandlerFunc(jwt.JwtMiddleware.HandlerWithNext),
 			negroni.HandlerFunc(controllers.DeleteUser),
 		)).Methods("DELETE")
+	router.Handle("/users/delete",
+		negroni.New(
+			negroni.HandlerFunc(jwt.JwtMiddleware.HandlerWithNext),
+			negroni.HandlerFunc(controllers.DeleteMultipleUser),
+		)).Methods("POST")
 
 	return router
 } 

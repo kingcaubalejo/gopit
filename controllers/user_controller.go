@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
 	"encoding/json"
 	"strconv"
@@ -70,6 +71,28 @@ func DeleteUser(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
 	UUId, _ := strconv.Atoi(r.URL.Query().Get("uuid"))
 
 	resultData, statusCode, err := services.DeleteUser(UUId)
+	if err != nil {
+		http.Error(w, err.Error(), statusCode)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(statusCode)
+	w.Write(resultData)
+}
+
+func DeleteMultipleUser(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
+
+	type MultipleUserUUID struct {
+		UUId []int `json:"uuid" form:"uuid"`
+	}
+	multipleUserUUID := MultipleUserUUID{}
+	decoder := json.NewDecoder(r.Body)
+	decoder.Decode(&multipleUserUUID)
+
+	fmt.Println(multipleUserUUID.UUId, "MULT PRE")
+
+	resultData, statusCode, err := services.DeleteMultipleUser(multipleUserUUID.UUId)
 	if err != nil {
 		http.Error(w, err.Error(), statusCode)
 		return
